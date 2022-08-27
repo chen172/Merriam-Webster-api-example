@@ -6,7 +6,19 @@ require 'net/http'
 
 #$word = "voluminous"
 
-$word = "virtual"
+#$word = "virtual"
+
+#$word = "wokd"
+
+
+
+$filename = "session1.txt"
+
+File.open($filename, "r") do |file|
+
+  file.each_line{|line| $word = line.chomp
+
+
 
 
 
@@ -27,6 +39,18 @@ res = Net::HTTP.start(url.host, url.port,
 json = res.body 
 
 
+
+if json[0,8] != "[{\"meta\""
+
+	puts "Error!!!"
+
+	puts "Please check the respond:"
+
+	puts json
+
+	return -1
+
+end
 
 # So hard to format the json
 
@@ -65,3 +89,54 @@ audio = "https://media.merriam-webster.com/audio/prons/en/us/mp3/#$subdirectory/
 puts $mw
 
 puts audio
+
+
+
+# Save prs 
+
+filename_prs = "prs_" + $filename
+
+aFile = File.new(filename_prs, "a+")
+
+if aFile
+
+   aFile.syswrite($mw+"\n")
+
+else
+
+   puts "Unable to open file!"
+
+end
+
+
+
+# Save audio 
+
+url = URI.parse(audio)
+
+req = Net::HTTP::Get.new url 
+
+res = Net::HTTP.start(url.host, url.port, 
+
+        :use_ssl => url.scheme == 'https') {|http| http.request req}
+
+        
+
+aFile = File.new("#$base_filename.mp3", "w+")
+
+if aFile
+
+   aFile.syswrite(res.body)
+
+else
+
+   puts "Unable to open file!"
+
+end
+
+
+
+}
+
+end
+

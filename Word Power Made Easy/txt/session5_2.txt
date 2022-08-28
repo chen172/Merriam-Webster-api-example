@@ -16,7 +16,6 @@ inoculate
 optometrist
 optometry
 optometric
-optometrical
 optician
 optics
 optical

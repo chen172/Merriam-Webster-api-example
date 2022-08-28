@@ -59,6 +59,30 @@ end
 hash = JSON.parse(json)
 
 prs = hash[0].fetch("hwi").fetch("prs")
+	  
+	  
+# fix issue1
+	  
+id = hash[0].fetch("meta").fetch("id")
+
+if id != $word
+
+hash[0].fetch("uros").each_entry {|entry|  
+
+id = entry.fetch("ure").delete("*") 
+
+if id == $word
+
+prs = entry.fetch("prs" )
+
+break
+
+end
+
+ }
+
+ end
+	  
 
 $mw = prs[0].fetch("mw")
 

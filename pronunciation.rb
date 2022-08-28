@@ -2,193 +2,180 @@ require 'json'
 
 require 'net/http'
 
-
-
 #$word = "voluminous"
 
 #$word = "virtual"
 
 #$word = "wokd"
 
-
-
 $filename = "session1.txt"
 
-File.open($filename, "r") do |file|
+File.open($filename, "r") do |file |
 
-  file.each_line{|line| $word = line.chomp
+    file.each_line {
+      | line | $word = line.chomp
 
+      # Get the written pronunciation in Merriam - Webster format
 
+      # And get audio playback information
 
+      url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
 
+      req = Net::HTTP::Get.new url
 
-# Get the written pronunciation in Merriam-Webster format
+      res = Net::HTTP.start(url.host, url.port,
 
-# And get audio playback information
+        : use_ssl => url.scheme == 'https') {
+        | http | http.request req
+      }
 
+      json = res.body
 
+      if json[0, 8] != "[{\"meta\""
 
-url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
+      puts "Error!!!"
 
-req = Net::HTTP::Get.new url 
+      puts "Please check the respond:"
 
-res = Net::HTTP.start(url.host, url.port, 
+      puts json
 
-        :use_ssl => url.scheme == 'https') {|http| http.request req}
+      return -1
 
-json = res.body 
+      end
 
+      # So hard to format the json
 
+      # relate type convert(String, Hash, Integer, Array)
 
-if json[0,8] != "[{\"meta\""
+      hash = JSON.parse(json)
 
-	puts "Error!!!"
+      prs = hash[0].fetch("hwi").fetch("prs")
 
-	puts "Please check the respond:"
+      # fix issue: https: //github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
 
-	puts json
+        id = id = hash[0].fetch("hwi").fetch("hw").delete("*")
 
-	return -1
+      if id != $word
 
-end
+      hash[0].fetch("uros").each_entry {
+        | entry |
 
-# So hard to format the json
+          id = entry.fetch("ure").delete("*")
 
-# relate type convert(String, Hash, Integer, Array)
+        if id == $word
 
-hash = JSON.parse(json)
+        prs = entry.fetch("prs")
 
-prs = hash[0].fetch("hwi").fetch("prs")
-	  
-	  
-# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
-	  
-id = id = hash[0].fetch("hwi").fetch("hw").delete("*")
+        break
 
-if id != $word
+        end
 
-hash[0].fetch("uros").each_entry {|entry|  
+      }
 
-id = entry.fetch("ure").delete("*") 
+      end
 
-if id == $word
+      # fix issue: https: //github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
+        if id != $word
 
-prs = entry.fetch("prs" )
+      id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*")
 
-break
+      if id == $word
 
-end
+      prs = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("prs")
 
- }
+      end
 
- end
-	  
-# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
-if id != $word
+      end
 
- id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*")
+      $mw = prs[0].fetch("mw")
 
- if id == $word
+      $base_filename = prs[0].fetch("sound").fetch("audio")
 
- prs = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("prs")
+      $subdirectory = $base_filename[0]
 
- end
+      if $base_filename[0].is_a ? (Numeric) or $base_filename[0] == '_'
 
- end
-	  
+      $subdirectory = "number"
 
-$mw = prs[0].fetch("mw")
+      elsif $base_filename[0] == 'g'
+      and $base_filename[1] == ''
 
-$base_filename = prs[0].fetch("sound").fetch("audio")
+      $subdirectory = "gg"
 
-$subdirectory = $base_filename[0]
+      elsif $base_filename[0] == 'b'
+      and $base_filename[1] == 'i'
+      and $base_filename[1] == 'x'
 
-if $base_filename[0].is_a?(Numeric) or $base_filename[0] == '_'
+      $subdirectory = "bix"
 
-	$subdirectory = "number"
+      else
 
-elsif $base_filename[0] == 'g' and $base_filename[1] == ''
+        $subdirectory = $base_filename[0]
 
-	$subdirectory = "gg"
+      end
 
-elsif $base_filename[0] == 'b' and $base_filename[1] == 'i' and $base_filename[1] == 'x'
+      audio = "https://media.merriam-webster.com/audio/prons/en/us/mp3/#$subdirectory/#$base_filename.mp3"
 
-	$subdirectory = "bix"
+      puts $mw
 
-else 
+      puts audio
 
-	$subdirectory = $base_filename[0]
+      # Save prs
 
-end
+      filename_prs = "prs_" + $filename
 
-audio = "https://media.merriam-webster.com/audio/prons/en/us/mp3/#$subdirectory/#$base_filename.mp3"
+      aFile = File.new(filename_prs, "a+")
 
-puts $mw
+      if aFile
 
-puts audio
+      aFile.syswrite($mw + "\n")
 
+      else
 
+        puts "Unable to open file!"
 
-# Save prs 
+      end
 
-filename_prs = "prs_" + $filename
+      # Save audio file name
 
-aFile = File.new(filename_prs, "a+")
+      filename_audio = "audio_" + $filename
 
-if aFile
+      aFile = File.new(filename_audio, "a+")
 
-   aFile.syswrite($mw+"\n")
+      if aFile
 
-else
+      aFile.syswrite($base_filename + "\n")
 
-   puts "Unable to open file!"
+      else
 
-end
+        puts "Unable to open file!"
 
-# Save audio file name
+      end
 
-filename_audio = "audio_" + $filename
+      # Save audio
 
-aFile = File.new(filename_audio, "a+")
+      url = URI.parse(audio)
 
-if aFile
+      req = Net::HTTP::Get.new url
 
-   aFile.syswrite($base_filename+"\n")
+      res = Net::HTTP.start(url.host, url.port,
 
-else
+        : use_ssl => url.scheme == 'https') {
+        | http | http.request req
+      }
 
-   puts "Unable to open file!"
+      aFile = File.new("#$base_filename.mp3", "w+")
 
-end
+      if aFile
 
+      aFile.syswrite(res.body)
 
-# Save audio 
+      else
 
-url = URI.parse(audio)
+        puts "Unable to open file!"
 
-req = Net::HTTP::Get.new url 
+      end
 
-res = Net::HTTP.start(url.host, url.port, 
+    }
 
-        :use_ssl => url.scheme == 'https') {|http| http.request req}
-
-        
-
-aFile = File.new("#$base_filename.mp3", "w+")
-
-if aFile
-
-   aFile.syswrite(res.body)
-
-else
-
-   puts "Unable to open file!"
-
-end
-
-
-
-}
-
-end
-
+  end

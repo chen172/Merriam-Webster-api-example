@@ -108,6 +108,21 @@ else
 
 end
 
+# Save audio file name
+
+filename_audio = "audio_" + $filename
+
+aFile = File.new(filename_audio, "a+")
+
+if aFile
+
+   aFile.syswrite($base_filename+"\n")
+
+else
+
+   puts "Unable to open file!"
+
+end
 
 
 # Save audio 

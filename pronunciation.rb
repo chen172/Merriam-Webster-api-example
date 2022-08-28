@@ -83,6 +83,19 @@ end
 
  end
 	  
+# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
+if id != $word
+
+ id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*")
+
+ if id == $word
+
+ prs = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("prs")
+
+ end
+
+ end
+	  
 
 $mw = prs[0].fetch("mw")
 

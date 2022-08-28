@@ -1,0 +1,10 @@
+anthropologist
+astronomer
+geologist
+biologist
+botanist
+zoologist
+entomologist
+philologist
+semanticist
+sociologist

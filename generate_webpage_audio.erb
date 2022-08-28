@@ -70,19 +70,17 @@ template = %{
 
   
 
-  <% for ii in 0..i-1 %>
+  <table>
 
- <p style="font-family:arial;color:black;font-size:30px;">
+ <% for ii in 0..i-1 %>
 
-<b><%= $word[ii] %></b>&nbsp&nbsp&nbsp&nbsp&nbsp 
+<tr>
 
+  <td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
 
+  <td>[<%= $prs[ii] %>]</td>
 
-[<%= $prs[ii] %>] &nbsp&nbsp&nbsp
-
-
-
-<audio controls="controls">
+  <td><audio controls="controls">
 
   <source src="audio/<%= $audio[ii]  %>.mp3" type="audio/mpeg">
 
@@ -90,9 +88,13 @@ Browser not support audio
 
 </audio>    
 
- </p>  
+</td>
 
- <% end %>     
+</tr>
+
+<% end %> 
+
+</table>   
 
            
 

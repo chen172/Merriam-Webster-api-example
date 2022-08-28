@@ -11,7 +11,7 @@ ophthalmological
 oculist
 ocular
 monocle
-binoculars
+binocular
 inoculate
 optometrist
 optometry

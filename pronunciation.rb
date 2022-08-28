@@ -63,7 +63,7 @@ prs = hash[0].fetch("hwi").fetch("prs")
 	  
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
 	  
-id = hash[0].fetch("meta").fetch("id")
+id = id = hash[0].fetch("hwi").fetch("hw").delete("*")
 
 if id != $word
 

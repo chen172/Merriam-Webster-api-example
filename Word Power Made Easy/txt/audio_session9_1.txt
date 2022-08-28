@@ -1,0 +1,10 @@
+period11
+period10
+endodo04
+endodo02
+exodon02
+exodon01
+thermo30
+barome01
+barome02
+sphygm02

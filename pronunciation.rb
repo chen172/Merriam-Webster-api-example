@@ -164,7 +164,19 @@ end
 
  end
 
+# fix bug: https://www.merriam-webster.com/dictionary/obstetrical
 
+ if id != $word
+
+ 	if hash[0].has_key?("vrs")
+
+		id = hash[0].fetch("vrs")[0].fetch("va").delete("*")
+
+		prs = hash[0].fetch("vrs")[0].fetch("prs")
+
+	end
+
+end
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
 

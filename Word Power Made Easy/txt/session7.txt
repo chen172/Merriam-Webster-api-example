@@ -1,0 +1,10 @@
+psychologist
+psychoanalyst
+orthodontist
+optometrist
+optician
+osteopath
+chiropractor
+podiatrist
+graphologist
+gerontologist

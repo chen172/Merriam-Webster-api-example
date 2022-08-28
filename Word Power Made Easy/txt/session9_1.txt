@@ -8,6 +8,6 @@ exodontist
 exodontia
 exodontic
 thermometer
-barmeter
+barometer
 barometric
 sphygmomanometer

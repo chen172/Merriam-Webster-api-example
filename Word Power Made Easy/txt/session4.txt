@@ -1,0 +1,10 @@
+internist
+gynecologist
+obstetrician
+pediatrician
+dermatologist
+ophthalmologist
+orthopedist
+cardiologist
+neurologist
+psychiatrist

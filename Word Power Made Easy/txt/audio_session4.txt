@@ -1,0 +1,10 @@
+intern25
+gyneco08
+obstet04
+pediat02
+dermat08
+ophtha03
+orthop04
+cardio09
+neurol02
+psychi04

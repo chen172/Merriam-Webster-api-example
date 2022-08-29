@@ -78,7 +78,7 @@ File.open($filename, "r") do |file|
 	elsif $base_filename[0] == 'b' and $base_filename[1] == 'i' and $base_filename[1] == 'x'
 		$subdirectory = "bix"
 	else 
-		$subdirectory = $base_filename[0]
+		$subdirectory = "number"
 	end
 	
 	# get the audio file path

@@ -11,6 +11,10 @@ $filename = "session11.txt"
 # and get audio playback information
 File.open($filename, "r") do |file|
 	file.each_line {|line| $word = line.chomp
+
+	# fix word: double entendre
+	# change white space to %20, for url use
+	$word = $word.gsub(/\s/, '%20')
 	
 	# api request
 	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=f83982f5-a08d-47e9-86e3-c12560ad1123")
@@ -20,11 +24,14 @@ File.open($filename, "r") do |file|
 	json = res.body 
 	# check the respond
 	if json[0,8] != "[{\"meta\""
-	puts "Error!!!"
-	puts "Please check the respond:"
-	puts json
-	return -1
-end
+		puts "Error!!!"
+		puts "Please check the respond:"
+		puts json
+		return -1
+	end
+		
+	# change white space to %20, for url use
+	$word = $word.gsub(/\s/, '%20')
 
 # so hard to format the json
 # relate type convert(String, Hash, Integer, Array)

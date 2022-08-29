@@ -5,7 +5,7 @@ patronymic
 synonym
 synonymous
 antonym
-antomymous
+antonymous
 homonym
 homonymous
 homophone

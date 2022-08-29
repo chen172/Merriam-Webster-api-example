@@ -1,0 +1,16 @@
+uncons02
+omnisc02
+omnisc01
+presci02
+presci01
+nescie03
+nescie02
+glib0001
+egregi01
+gregar02
+congre02
+congre05
+segreg02
+segreg05
+aggreg01
+aggreg04

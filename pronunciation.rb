@@ -36,10 +36,13 @@ File.open($filename, "r") do |file|
 # so hard to format the json
 # relate type convert(String, Hash, Integer, Array)
 	hash = JSON.parse(json)
-	prs = hash[0].fetch("hwi").fetch("prs")
+		
+	id = hash[0].fetch("hwi").fetch("hw").delete("*")
+	if id == $word
+		prs = hash[0].fetch("hwi").fetch("prs")
+	end
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
-	id = id = hash[0].fetch("hwi").fetch("hw").delete("*")
 	if id != $word
 		hash[0].fetch("uros").each_entry {|entry|  
 		id = entry.fetch("ure").delete("*") 

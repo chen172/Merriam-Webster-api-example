@@ -1,0 +1,63 @@
+require 'erb'
+
+$num = "12_2"
+filename_word = "session#$num.txt"
+filename_prs = "prs_session#$num.txt"
+filename_audio = "audio_session#$num.txt"
+title = "Session#$num"
+
+template = %{
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title><%= title %></title>
+	</head>
+			
+	<body>
+ <%
+	# read word from file
+	i = 0 
+	$word = Array.new  
+	File.open(filename_word, "r") do |file|
+		file.each_line{|line| $word[i] = line.chomp 
+		i = i+1
+		} 
+	end 
+	
+	i = 0 
+	$prs = Array.new 
+	File.open(filename_prs, "r") do |file|
+		file.each_line{|line| $prs[i] = line.chomp 
+		i = i+1
+		} 
+	end 
+	 
+	i = 0 
+	$audio = Array.new 
+	File.open(filename_audio, "r") do |file|
+		file.each_line{|line| $audio[i] = line.chomp 
+		i = i+1
+	} 
+	end 
+%>  
+		<table>
+<% for ii in 0..i-1 %>
+			<tr>
+				<td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
+				<td>[<%= $prs[ii] %>]</td>
+				<td>
+					<audio controls="controls">
+						<source src="audio/<%= $audio[ii]  %>.mp3" type="audio/mpeg">Browser not support audio 
+					</audio>
+				</td>
+			</tr>
+<% end %> 
+		</table>   
+	</body>
+</html>
+}.gsub(/^  /, '')
+
+
+rhtml = ERB.new(template)
+puts rhtml.result(binding)

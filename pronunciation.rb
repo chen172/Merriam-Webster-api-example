@@ -15,7 +15,8 @@ File.open($filename, "r") do |file|
 	# fix word: double entendre
 	# change white space to %20, for url use
 	$word = $word.gsub(/\s/, '%20')
-	
+	$word = URI.encode_www_form_component($word)
+		
 	# api request
 	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=f83982f5-a08d-47e9-86e3-c12560ad1123")
 	req = Net::HTTP::Get.new url 
@@ -32,6 +33,8 @@ File.open($filename, "r") do |file|
 		
 	# change white space to %20, for url use
 	$word = $word.gsub(/\s/, '%20')
+	$word = URI.decode_www_form_component($word)
+	$word = $word.delete("-")		
 
 # so hard to format the json
 # relate type convert(String, Hash, Integer, Array)

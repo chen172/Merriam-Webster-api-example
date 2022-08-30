@@ -37,7 +37,7 @@ File.open($filename, "r") do |file|
 # relate type convert(String, Hash, Integer, Array)
 	hash = JSON.parse(json)
 		
-	id = hash[0].fetch("hwi").fetch("hw").delete("*")
+	id = hash[0].fetch("hwi").fetch("hw").delete("*").delete("-")
 	if id == $word
 		prs = hash[0].fetch("hwi").fetch("prs")
 	end
@@ -45,7 +45,7 @@ File.open($filename, "r") do |file|
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
 	if id != $word
 		hash[0].fetch("uros").each_entry {|entry|  
-		id = entry.fetch("ure").delete("*") 
+		id = entry.fetch("ure").delete("*").delete("-") 
 		if id == $word
 			prs = entry.fetch("prs" )
 			break
@@ -56,14 +56,14 @@ File.open($filename, "r") do |file|
 # fix bug: https://www.merriam-webster.com/dictionary/obstetrical
 	if id != $word
 		if hash[0].has_key?("vrs")
-			id = hash[0].fetch("vrs")[0].fetch("va").delete("*")
+			id = hash[0].fetch("vrs")[0].fetch("va").delete("*").delete("-")
 			prs = hash[0].fetch("vrs")[0].fetch("prs")
 		end
 	end
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
 	if id != $word
-		id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*")
+		id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*").delete("-")
 		if id == $word
 			prs = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("prs")
 		end

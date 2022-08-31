@@ -1,5 +1,10 @@
 require 'erb'
 
+if ARGV.empty?
+	puts "You must add a filename"
+	exit
+end
+
 $filename = ARGV[0]
 filename_word = $filename
 filename_prs = "prs_#$filename"

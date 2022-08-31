@@ -1,10 +1,10 @@
 require 'erb'
 
-$num = "11"
-filename_word = "session#$num.txt"
-filename_prs = "prs_session#$num.txt"
-filename_audio = "audio_session#$num.txt"
-title = "Session#$num"
+$filename = ARGV[0]
+filename_word = $filename
+filename_prs = "prs_#$filename"
+filename_audio = "audio_#$filename"
+title = $filname
 
 template = %{
 <!DOCTYPE html>
@@ -20,7 +20,11 @@ template = %{
 	i = 0 
 	$word = Array.new  
 	File.open(filename_word, "r") do |file|
-		file.each_line{|line| $word[i] = line.chomp 
+		file.each_line{|line|
+		if line[0] == "#"
+			next
+		end
+		$word[i] = line.chomp 
 		i = i+1
 		} 
 	end 
@@ -60,4 +64,10 @@ template = %{
 
 
 rhtml = ERB.new(template)
-puts rhtml.result(binding)
+aFile = File.new("#$filename.html", "w+")
+if aFile
+	aFile.syswrite(rhtml.result(binding))
+else
+	puts "Unable to open file!"
+end
+aFile.close

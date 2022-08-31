@@ -34,4 +34,5 @@ File.open($filename, "r") do |file|
 	}
 end
 
+a.close
 system "mv tmp.md #$filename"

@@ -5,13 +5,17 @@ require 'net/http'
 #$word = "virtual"
 #$word = "wokd"
 
-$filename = "session11.txt"
+$filename = ARGV[0]
 
 # get the written pronunciation in Merriam-Webster format
 # and get audio playback information
 File.open($filename, "r") do |file|
 	file.each_line {|line| $word = line.chomp
 
+	if $word[0] == "#"
+		next
+	end
+		
 	# fix word: double entendre
 	# change white space to %20, for url use
 	$word = $word.gsub(/\s/, '%20')

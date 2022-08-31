@@ -5,6 +5,11 @@ require 'net/http'
 #$word = "virtual"
 #$word = "wokd"
 
+if ARGV.empty?
+	puts "You must add a filename"
+	exit
+end
+
 $filename = ARGV[0]
 
 # get the written pronunciation in Merriam-Webster format

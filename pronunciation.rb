@@ -26,7 +26,7 @@ File.open($filename, "r") do |file|
 	$word = $word.gsub(/\+/, '%20')		
 		
 	# api request
-	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=f83982f5-a08d-47e9-86e3-c12560ad1123")
+	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
 	req = Net::HTTP::Get.new url 
 	begin
 	res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}

@@ -9,7 +9,7 @@ $filename = ARGV[0]
 filename_word = $filename
 filename_prs = "prs_#$filename"
 filename_audio = "audio_#$filename"
-title = $filename
+title = File.basename($filename, ".txt")
 
 template = %{
 <!DOCTYPE html>

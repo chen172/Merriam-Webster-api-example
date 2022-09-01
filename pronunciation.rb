@@ -21,12 +21,11 @@ File.open($filename, "r") do |file|
 		next
 	end
 	
-	# fix word: double entendre
 	$word = URI.encode_www_form_component($word)
-	$word = $word.gsub(/\+/, '%20')		
-		
+	$word = $word.gsub(/\+/, '%20')	
+	
 	# api request
-	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
+	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=f83982f5-a08d-47e9-86e3-c12560ad1123")
 	req = Net::HTTP::Get.new url 
 	begin
 	res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
@@ -52,15 +51,15 @@ File.open($filename, "r") do |file|
 	hash = JSON.parse(json)
 		
 	id = hash[0].fetch("hwi").fetch("hw").delete("*").delete("-")
-	if id == $word
+	if $word.casecmp(id) == 0
 		prs = hash[0].fetch("hwi").fetch("prs")
 	end
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
-	if id != $word
+	if $word.casecmp(id) != 0
 		hash[0].fetch("uros").each_entry {|entry|  
 		id = entry.fetch("ure").delete("*").delete("-") 
-		if id == $word
+		if $word.casecmp(id) == 0
 			prs = entry.fetch("prs" )
 			break
 		end
@@ -68,7 +67,7 @@ File.open($filename, "r") do |file|
 	end
 
 # fix bug: https://www.merriam-webster.com/dictionary/obstetrical
-	if id != $word
+	if $word.casecmp(id) != 0
 		if hash[0].has_key?("vrs")
 			id = hash[0].fetch("vrs")[0].fetch("va").delete("*").delete("-")
 			prs = hash[0].fetch("vrs")[0].fetch("prs")
@@ -76,15 +75,20 @@ File.open($filename, "r") do |file|
 	end
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
-	if id != $word
+	if $word.casecmp(id) != 0
 		id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*").delete("-")
-		if id == $word
+		if $word.casecmp(id) == 0
 			prs = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("prs")
 		end
 	end
 
 	$mw = prs[0].fetch("mw")
-	$base_filename = prs[0].fetch("sound").fetch("audio")
+	prs.each_entry { |entry|
+		if entry.has_key?("sound")
+			$base_filename = entry.fetch("sound").fetch("audio")
+			break
+		end
+	}
 	
 	# get word subdirectory
 	$subdirectory = $base_filename[0]
@@ -130,8 +134,6 @@ File.open($filename, "r") do |file|
 	else
 		puts "Unable to open file!"
 	end
-
-
 
 	# save audio file name
 	filename_audio = "audio_" + $filename

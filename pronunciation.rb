@@ -94,7 +94,7 @@ File.open($filename, "r") do |file|
 	$subdirectory = $base_filename[0]
 	if ($base_filename[0].to_i > 0) or $base_filename[0] == '_'
 		$subdirectory = "number"
-	elsif $base_filename[0] == 'g' and $base_filename[1] == ''
+	elsif $base_filename[0] == 'g' and $base_filename[1] == 'g'
 		$subdirectory = "gg"
 	elsif $base_filename[0] == 'b' and $base_filename[1] == 'i' and $base_filename[1] == 'x'
 		$subdirectory = "bix"

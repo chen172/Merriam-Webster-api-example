@@ -13,7 +13,7 @@ You need provide your Merriam Webster api key in [here](https://github.com/chen1
 3. Run `ruby generate_webpage_audio.erb XX.txt` to get a webpage.
 
 ## How to get a XX.txt file as the input file
-* You can create by yourself. (Note: one line a word and start with '#' will be skip)
+* You can create by yourself. (*Note: one line a word and start with '#' will be skip*)
 * Or you can get a XX.txt file from [Word Power Made Easy](https://github.com/chen172/chen172.github.io/tree/main/Word_Power_Made_Easy/words) or [Merriam-Webster's Vocabulary Builder](https://github.com/chen172/chen172.github.io/tree/main/Merriam-Webster's_Vocabulary_Builder/words)
 
 ##### Ruby Version

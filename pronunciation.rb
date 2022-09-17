@@ -1,10 +1,6 @@
 require 'json'
 require 'net/http'
 
-#$word = "voluminous"
-#$word = "virtual"
-#$word = "wokd"
-
 if ARGV.empty?
 	puts "You must add a filename"
 	exit
@@ -46,12 +42,12 @@ File.open($filename, "r") do |file|
 	$word = URI.decode_www_form_component($word)
 	$word = $word.delete("-")		
 
-# so hard to format the json
-# relate type convert(String, Hash, Integer, Array)
+	# so hard to format the json
+	# relate type convert(String, Hash, Integer, Array)
 	hash = JSON.parse(json)
 		
 # fix bug: https://www.merriam-webster.com/dictionary/per se
-# init variable
+	# init variable
 	id = ""
 	prs = ""
 	hash.each_entry {|entry|  

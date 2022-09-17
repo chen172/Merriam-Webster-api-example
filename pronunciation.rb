@@ -25,7 +25,7 @@ File.open($filename, "r") do |file|
 	$word = $word.gsub(/\+/, '%20')	
 	
 	# api request
-	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
+	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=f83982f5-a08d-47e9-86e3-c12560ad1123")
 	req = Net::HTTP::Get.new url 
 	begin
 	res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
@@ -50,20 +50,29 @@ File.open($filename, "r") do |file|
 # relate type convert(String, Hash, Integer, Array)
 	hash = JSON.parse(json)
 		
-	id = hash[0].fetch("hwi").fetch("hw").delete("*").delete("-")
-	if $word.casecmp(id) == 0
-		prs = hash[0].fetch("hwi").fetch("prs")
-	end
+# fix bug: https://www.merriam-webster.com/dictionary/per se
+# init variable
+	id = ""
+	prs = ""
+	hash.each_entry {|entry|  
+		id = entry.fetch("hwi").fetch("hw").delete("*").delete("-")
+		if $word.casecmp(id) == 0
+			prs = entry.fetch("hwi").fetch("prs")
+			break
+		end
+	}		
 
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
 	if $word.casecmp(id) != 0
-		hash[0].fetch("uros").each_entry {|entry|  
-		id = entry.fetch("ure").delete("*").delete("-") 
-		if $word.casecmp(id) == 0
-			prs = entry.fetch("prs" )
-			break
+		if hash[0].has_key?("uros")
+			hash[0].fetch("uros").each_entry {|entry|  
+			id = entry.fetch("ure").delete("*").delete("-") 
+			if $word.casecmp(id) == 0
+				prs = entry.fetch("prs" )
+				break
+			end
+			}
 		end
-		}
 	end
 
 # fix bug: https://www.merriam-webster.com/dictionary/obstetrical

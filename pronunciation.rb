@@ -63,8 +63,21 @@ File.open($filename, "r") do |file|
 				break
 			end
 		end
-	}		
-
+	}
+		
+# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/5		
+	if $word.casecmp(id) != 0
+		if hash[0].has_key?("ins")
+			hash[0].fetch("ins").each_entry {|entry|  
+			id = entry.fetch("if").delete("*").delete("-") 
+			if $word.casecmp(id) == 0
+				prs = entry.fetch("prs" )
+				break
+			end
+			}
+		end
+	end
+		
 # fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2
 	if $word.casecmp(id) != 0
 		if hash[0].has_key?("uros")

@@ -1,6 +1,11 @@
 # Get words audio from Merriam Webster
 See [Website](https://chen172.github.io/) for [Word Power Made Easy Audio](https://chen172.github.io/Word_Power_Made_Easy_Audio.html) and [Merriam-Webster's Vocabulary Builder Audio](https://chen172.github.io/Merriam-Webster's_Vocabulary_Builder_Audio.html)
 
+## Prerequisite
+You need provide your Merriam Webster api key in [here](https://github.com/chen172/Merriam-Webster-api-example/blob/e4db0f35eb73a6e80ef1e87342c75e51a7802047/pronunciation.rb#L28).
+
+*Note: You can get api key from https://www.dictionaryapi.com/*
+
 ## Usage
 1. Create a XX.txt file contains words. 
 

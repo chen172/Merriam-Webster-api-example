@@ -57,12 +57,15 @@ File.open($filename, "r") do |file|
 	hash.each_entry {|entry|  
 		id = entry.fetch("hwi").fetch("hw").delete("*").delete("-")
 		if $word.casecmp(id) == 0
-			prs = entry.fetch("hwi").fetch("prs")
-			break
+# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/7
+			if entry.fetch("hwi").has_key?("prs")
+				prs = entry.fetch("hwi").fetch("prs")
+				break
+			end
 		end
 	}		
 
-# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2#issuecomment-1229459120
+# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/2
 	if $word.casecmp(id) != 0
 		if hash[0].has_key?("uros")
 			hash[0].fetch("uros").each_entry {|entry|  
@@ -83,7 +86,7 @@ File.open($filename, "r") do |file|
 		end
 	end
 
-# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3#issuecomment-1229483723
+# fix issue: https://github.com/chen172/Merriam-Webster-api-example/issues/3
 	if $word.casecmp(id) != 0
 		id = hash[0].fetch("uros")[0].fetch("vrs")[0].fetch("va").delete("*").delete("-")
 		if $word.casecmp(id) == 0

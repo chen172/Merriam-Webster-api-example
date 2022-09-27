@@ -134,7 +134,7 @@ File.open($filename, "r") do |file|
 	url = URI.parse(audio)
 	req = Net::HTTP::Get.new url 
 	begin
-	res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
+		res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
 	rescue 
 		puts "retry connection"
 		retry

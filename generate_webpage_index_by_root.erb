@@ -1,0 +1,58 @@
+require 'erb'
+
+template = %{
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="icon" href="img/webster.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <title>Merriam-Webster's Vocabulary Builder Audio
+    </title>
+    <style>
+table {
+  table-layout: fixed ;
+  width: 30% ;
+}
+     </style>
+  </head>
+			
+  <body>
+<%
+	for file_no in 1..30
+		# read one root file
+		$filename_html = "Unit"+file_no.to_s
+		filename_root = "root_Unit" + file_no.to_s + ".txt"
+		i = 0
+		$root = Array.new
+		File.open(filename_root, "r") do |file|
+			file.each_line{|line| $root[i] = line.chomp 
+			i = i+1
+		}
+		end
+%>
+    <h1><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html"><%= $filename_html %></a></h1>
+	<table>
+<% for ii in 0..i-1
+		if $root[ii] == "Number Words"
+			next
+		end
+%>
+		<tr>
+		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii] %>"><%= $root[ii] %></a></td>
+		</tr>	
+<% end %> 
+	</table> 
+<% end %>    
+  </body>
+</html>
+}.gsub(/^  /, '')
+
+
+rhtml = ERB.new(template)
+aFile = File.new("Merriam-Webster's_Vocabulary_Builder_Audio.html", "w+")
+if aFile
+	aFile.syswrite(rhtml.result(binding))
+else
+	puts "Unable to open file!"
+end
+aFile.close

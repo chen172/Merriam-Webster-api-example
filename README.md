@@ -10,7 +10,8 @@ You need provide your Merriam Webster api key in [here](https://github.com/chen1
 1. Create a XX.txt file contains words. 
 
 2. Run `ruby pronunciation.rb XX.txt` to get needed files, prs_XX.txt, audio_XX.txt, audio files for the words in XX.txt.
-3. Run `ruby generate_webpage_audio.erb XX.txt` to get a webpage.
+3. Run `ruby generate_webpage_audio.erb XX.txt` to generate a webpage.
+4. Run `ruby generate_webpage_index_by_root.erb` to generate webpage `Merriam-Webster's_Vocabulary_Builder_Audio.html`.
 
 ## How to get a XX.txt file as the input file
 * You can create by yourself. (*Note: one line a word and start with '#' will be skip*)

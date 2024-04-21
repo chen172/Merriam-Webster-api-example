@@ -61,7 +61,7 @@ template = %{
 %>  
 
 <% for ii in 0..i-1 %>
-<% if ii % 4 == 0 %>
+<% if ii % 4 == 0 and ii/4 < $root.length() %>
 <hr id='<%= $root[ii/4] %>'>
 <p><strong><%= $root[ii/4] %></strong>
 <hr>
@@ -78,7 +78,7 @@ template = %{
 					</audio>
 				</td>
 			</tr>
-<% if ii % 4 == 3 %>
+<% if ii % 4 == 3 and ii/4 != ($root.length()-1) %>
 	</table>
 <% end %>
 <% end %>    

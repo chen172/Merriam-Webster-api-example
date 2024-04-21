@@ -33,8 +33,12 @@ table {
     <h1><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html"><%= $filename_html %></a></h1>
 	<table>
 <% for ii in 0..i-1
-		if $root[ii] == "Number Words"
-			next
+		if $root[ii] == "Number Words" or $root[ii] == "Medical Words"
+%>
+		<tr>
+		<td><%= $root[ii] %></a></td>
+		</tr>
+<%			next
 		end
 %>
 		<tr>

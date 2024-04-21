@@ -52,6 +52,11 @@ template = %{
 %>  
 		<table>
 <% for ii in 0..i-1 %>
+<% if $prs[ii] == "null" %>
+			<tr>
+				<td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
+			</tr>
+<% else %>
 			<tr>
 				<td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
 				<td>[<%= $prs[ii] %>]</td>
@@ -61,6 +66,7 @@ template = %{
 					</audio>
 				</td>
 			</tr>
+<% end %>
 <% end %> 
 		</table>   
 	</body>

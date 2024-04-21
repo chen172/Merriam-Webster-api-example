@@ -80,6 +80,11 @@ template = %{
 	<col width="250" />
 	<col width="250" />
 <% end %>
+<% if $prs[ii] == "null" %>
+			<tr>
+				<td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
+			</tr>
+<% else %>
 			<tr>
 				<td style="font-family:arial;color:black;font-size:30px;"><%= $word[ii] %></td>
 				<td>[<%= $prs[ii] %>]</td>
@@ -89,6 +94,7 @@ template = %{
 					</audio>
 				</td>
 			</tr>
+<% end %>
 <% if ii % 4 == 3 and ii/4 != ($root.length()-1) %>
 <%	root_index += 1 %>
 	</table>

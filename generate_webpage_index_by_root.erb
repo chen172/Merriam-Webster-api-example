@@ -10,8 +10,11 @@ template = %{
     </title>
     <style>
 table {
-  table-layout: fixed ;
-  width: 30% ;
+table-layout: fixed ;
+}
+th, td {
+  text-align: left;
+  width: 300px;
 }
      </style>
   </head>
@@ -32,17 +35,20 @@ table {
 %>
     <h1><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html"><%= $filename_html %></a></h1>
 	<table>
-<% for ii in 0..i-1
-		if $root[ii] == "Number Words" or $root[ii] == "Medical Words"
+<% for ii in 0..4
+		if $root[ii*2] == "Number Words" or $root[ii*2] == "Medical Words"
 %>
 		<tr>
 		<td><%= $root[ii] %></a></td>
+		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii*2+1] %>"><%= $root[ii*2+1] %></a></td>
+		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii*2+2] %>"><%= $root[ii*2+2] %></a></td>
 		</tr>
-<%			next
+<%			break
 		end
 %>
 		<tr>
-		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii] %>"><%= $root[ii] %></a></td>
+		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii*2] %>"><%= $root[ii*2] %></td>
+		<td><a href="Merriam-Webster's_Vocabulary_Builder/<%= $filename_html %>.txt.html#<%= $root[ii*2+1] %>"><%= $root[ii*2+1] %></a></td>
 		</tr>	
 <% end %> 
 	</table> 

@@ -131,21 +131,8 @@ File.open($filename, "r") do |file|
 	puts audio
 
 	# save audio 
-	url = URI.parse(audio)
-	req = Net::HTTP::Get.new url 
-	begin
-		res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
-	rescue 
-		puts "retry connection"
-		retry
-	end
-	
-	aFile = File.new("#$base_filename.mp3", "w+")
-	if aFile
-		aFile.syswrite(res.body)
-	else
-		puts "Unable to open file!"
-	end
+	save_audio = "curl " + audio + " --output " + "#$base_filename.mp3"
+	system(save_audio)
 
 	# save prs 
 	filename_prs = "prs_" + $filename

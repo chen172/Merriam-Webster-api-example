@@ -19,7 +19,8 @@ File.open($filename, "r") do |file|
 	end
 	
 	$word = URI.encode_www_form_component($word)
-	$word = $word.gsub(/\+/, '%20')	
+	$word = $word.gsub(/\+/, '%20')
+	$word_www = $word	
 	
 	# api request
 	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
@@ -48,7 +49,21 @@ File.open($filename, "r") do |file|
 	hash = JSON.parse(json)
 
 	# save definition
-	shortdef = hash[0].fetch("shortdef")[0]
+	url = URI.parse("https://api.dictionaryapi.dev/api/v2/entries/en/#$word_www")
+	puts(url)
+	proxy = Net::HTTP::Proxy("127.0.0.1", "10808")
+	req = Net::HTTP::Get.new url 
+	begin
+		res = proxy.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
+	rescue 
+		puts "retry connection"
+		retry
+	end	
+
+	json = res.body
+	hash_freeDictionaryAPI = JSON.parse(json)
+	shortdef = hash_freeDictionaryAPI[0].fetch("meanings")[0].fetch("definitions")[0].fetch("definition")
+	#shortdef = hash[0].fetch("shortdef")[0]
 	filename_def = "def_" + $filename
 	aFile = File.new(filename_def, "a+")
 	if aFile

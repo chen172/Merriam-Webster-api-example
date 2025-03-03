@@ -2,11 +2,12 @@ require 'json'
 require 'net/http'
 
 if ARGV.empty?
-	puts "You must add a filename"
+	puts "Usage: #{__FILE__} words.txt [-def]"
 	exit
 end
 
 $filename = ARGV[0]
+$only_save_def = ARGV[1]
 
 # get the written pronunciation in Merriam-Webster format
 # and get audio playback information
@@ -45,7 +46,20 @@ File.open($filename, "r") do |file|
 	# so hard to format the json
 	# relate type convert(String, Hash, Integer, Array)
 	hash = JSON.parse(json)
-		
+
+	# save definition
+	shortdef = hash[0].fetch("shortdef")[0]
+	filename_def = "def_" + $filename
+	aFile = File.new(filename_def, "a+")
+	if aFile
+		aFile.syswrite(shortdef+"\n")
+	else
+		puts "Unable to open file!"
+	end
+	if ($only_save_def == "-def")
+		next
+	end
+
 # fix bug: https://www.merriam-webster.com/dictionary/per se
 	# init variable
 	id = ""

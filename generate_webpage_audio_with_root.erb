@@ -10,6 +10,7 @@ filename_word = $filename
 filename_prs = "prs_#$filename"
 filename_audio = "audio_#$filename"
 filename_root = "root_#$filename"
+filename_def_root = "def_root_#$filename"
 title = File.basename($filename, ".txt")
 
 template = %{
@@ -19,7 +20,9 @@ template = %{
 		<meta charset="utf-8">
 		<title><%= title %></title>
 	</head>
-			
+	<style>
+		p {color: #0061f2; font-size: large; margin: auto; width: 50%; display: inline-block;}
+	</style>
 	<body>
  <%
 	# read word from file
@@ -52,6 +55,14 @@ template = %{
 	} 
 	end
 
+	i = 0
+	$def_root = Array.new 
+	File.open(filename_def_root, "r") do |file|
+		file.each_line{|line| $def_root[i] = line.chomp 
+		i = i+1
+	} 
+	end
+
 	i = 0 
 	$audio = Array.new 
 	File.open(filename_audio, "r") do |file|
@@ -64,7 +75,8 @@ template = %{
 <% for ii in 0..i-1 %>
 <% if ii % 4 == 0 and ii/4 < $root.length() and $root[root_index] != "Number Words" and $root[root_index] != "Medical Words" %>
 <hr id='<%= $root[root_index] %>'>
-<p><strong><%= $root[root_index] %></strong>
+<%= $def_root[root_index] %>
+<audio controls="controls"><source src="root/<%= "def_"+$root[root_index]  %>.wav" type="audio/mpeg">Browser not support audio </audio>
 <hr>
 	<table>
 	<col width="250" />
@@ -74,7 +86,8 @@ template = %{
 <h2><%= $root[root_index] %></h2>
 <%	root_index += 1 %>
 <hr id='<%= $root[root_index] %>'>
-<p><strong><%= $root[root_index] %></strong>
+<%= $def_root[root_index] %>
+<audio controls="controls"><source src="root/<%= "def_"+$root[root_index]  %>.wav" type="audio/mpeg">Browser not support audio </audio>
 <hr>
 	<table>
 	<col width="250" />

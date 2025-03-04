@@ -14,6 +14,8 @@ You need provide your Merriam Webster api key in [here](https://github.com/chen1
 4. Run `ruby generate_webpage_index_by_root.erb` to generate webpage `Merriam-Webster's_Vocabulary_Builder_Audio.html`.
 5. Run `ruby generate_webpage_audio_with_root.erb XX.txt` to generate a webpage.
 6. Run `for %i in (*.txt.html) do ruby insert_webpage.rb "%~i"` to insert webpages.
+7. Run `for %i in (*.txt.html) do ruby extract_webpage.rb "%~i"` to extract webpages.
+8. Run `for %i in (def_root*) do ruby generate_audio_sentence.rb "%~i"  piper_dir` to generate audio.
 
 ## How to get a XX.txt file as the input file
 * You can create by yourself. (*Note: one line a word and start with '#' will be skip*)

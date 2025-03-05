@@ -50,7 +50,7 @@ template = %{
 	root_index = 0; 
 	$root = Array.new 
 	File.open(filename_root, "r") do |file|
-		file.each_line{|line| $root[i] = line.chomp 
+		file.each_line{|line| $root[i] = line.chomp.tr("/", "_")
 		i = i+1
 	} 
 	end

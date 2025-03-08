@@ -62,8 +62,12 @@ File.open($filename, "r") do |file|
 
 	json = res.body
 	hash_freeDictionaryAPI = JSON.parse(json)
-	shortdef = hash_freeDictionaryAPI[0].fetch("meanings")[0].fetch("definitions")[0].fetch("definition")
-	#shortdef = hash[0].fetch("shortdef")[0]
+	if json.include?("No Definitions Found")
+		shortdef = "No Definitions Found"
+	else
+		shortdef = hash_freeDictionaryAPI[0].fetch("meanings")[0].fetch("definitions")[0].fetch("definition")
+		#shortdef = hash[0].fetch("shortdef")[0]
+	end
 	filename_def = "def_" + $filename
 	aFile = File.new(filename_def, "a+")
 	if aFile

@@ -6,6 +6,7 @@ if ARGV.empty?
 	exit
 end
 
+
 $filename = ARGV[0]
 $only_save_def = ARGV[1]
 
@@ -23,7 +24,7 @@ File.open($filename, "r") do |file|
 	$word_www = $word	
 	
 	# api request
-	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=your key")
+	url = URI.parse("https://www.dictionaryapi.com/api/v3/references/collegiate/json/#$word?key=#{collegiate_key}")
 	req = Net::HTTP::Get.new url 
 	begin
 		res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
@@ -35,10 +36,22 @@ File.open($filename, "r") do |file|
 	json = res.body 
 	# check the respond
 	if json[0,8] != "[{\"meta\""
-		puts "Error!!!"
-		puts "Please check the respond:"
-		puts json
-		return -1
+		url = URI.parse("https://www.dictionaryapi.com/api/v3/references/medical/json/#$word?key=#{medical_key}")
+		req = Net::HTTP::Get.new url 
+		begin
+			res = Net::HTTP.start(url.host, url.port, :use_ssl => url.scheme == 'https') {|http| http.request req}
+		rescue 
+			puts "retry connection"
+			retry
+		end	
+
+		json = res.body
+		if json[0,8] != "[{\"meta\""
+			puts "Error!!!"
+			puts "Please check the respond:"
+			puts json
+			return -1
+		end
 	end
 		
 	$word = URI.decode_www_form_component($word)
